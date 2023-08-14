@@ -1,0 +1,10 @@
+const express = require('express')
+const app = express()
+const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
+const userRouter =require('./Route/User.router')
+
+mongoose.connect('mongodb://127.0.0.1/website')  
+app.use(bodyParser.json())
+app.use('/api',userRouter)
+app.listen(3000 , ()=>console.log("server on"))
