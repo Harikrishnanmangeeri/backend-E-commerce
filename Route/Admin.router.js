@@ -1,0 +1,17 @@
+const express = require('express')
+const adminRoute = express.Router()
+const controller = require('../controllers/admin.controller')
+const auth = require('../middleware/jwt')
+const trycatchmiddleware =require('../middleware/trycatchmidlware')
+
+adminRoute.post('/admin/login',trycatchmiddleware(controller.admin))
+adminRoute.get('/admin/users',auth,trycatchmiddleware(controller.adminuser))
+adminRoute.get('/admin/users/:id',auth,trycatchmiddleware(controller.adminuserbyid))
+adminRoute.get('/admin/products',auth,trycatchmiddleware(controller.adminviewproduct))
+adminRoute.get('/admin/products/:id',auth,trycatchmiddleware(controller.adminviewproductbyid))
+adminRoute.get('/admin/products/category/:categoryname',auth,trycatchmiddleware(controller.productcategory))
+adminRoute.post('/admin/products',auth,trycatchmiddleware(controller.adminAddproduct))
+adminRoute.put('/admin/products',auth,trycatchmiddleware(controller.adminEditproduct))
+adminRoute.delete('/admin/products',auth,trycatchmiddleware(controller.adminDelete))
+adminRoute.delete('/admin/stats',auth,trycatchmiddleware(controller.stats))
+module.exports=adminRoute

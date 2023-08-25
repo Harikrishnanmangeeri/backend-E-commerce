@@ -1,7 +1,10 @@
 const mangoose = require('mongoose')
 
 const productSchema = new mangoose.Schema({
-    title:String,
+    title: {
+        type:String,
+        required:true
+    },
     price:Number,
     image:String,
     description:String,
@@ -10,5 +13,4 @@ const productSchema = new mangoose.Schema({
 module.exports = mangoose.model('Product',productSchema)
 
   
-
   

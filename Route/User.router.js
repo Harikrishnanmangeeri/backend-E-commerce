@@ -1,13 +1,17 @@
 const express = require('express')
 var userRouter = express.Router()
 const controller = require("../controllers/user.controller")
-
-userRouter.post('/users/register', controller.register)
-userRouter.post('/users/login' , controller.login)  
-userRouter.get('/users/products',controller.products)
-userRouter.get('/users/products/:id',controller.productbyid)
-userRouter.get('/users/products/category/:categoryname',controller.productbycategory)
-userRouter.post('/users/:id/cart', controller.cartid)  
-
+const auth = require ("../middleware/jwt")
+const trycatchmiddleware = require("../middleware/trycatchmidlware")
+userRouter.post('/users/register', trycatchmiddleware(controller.register))
+userRouter.post('/users/login' , trycatchmiddleware(controller.login))  
+userRouter.get('/users/products',auth,trycatchmiddleware(controller.products))
+userRouter.get('/users/products/:id',auth,trycatchmiddleware(controller.productbyid))
+userRouter.get('/users/products/category/:categoryname',auth,trycatchmiddleware(controller.productbycategory))
+userRouter.post('/users/:id/cart', auth,trycatchmiddleware(controller.cartid))  
+userRouter.get('/users/:id/cart',auth,trycatchmiddleware(controller.productincart))
+userRouter.post('/users/:id/wishlist',auth,trycatchmiddleware(controller.wishlist))
+userRouter.get('/users/:id/wishlist',auth,trycatchmiddleware(controller.wishlistbyget))
+userRouter.delete('/users/:id/wishlist',auth,trycatchmiddleware(controller.wishlistdelete))
 
 module.exports=userRouter
