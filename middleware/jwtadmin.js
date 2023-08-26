@@ -4,7 +4,7 @@ const auth =(req,res,next)=>{
     console.log(token);
     if(token){
         const recive = token && token.split(' ')[1]
-        const jwtverify = jwt.verify(recive,'secret')
+        const jwtverify = jwt.verify(recive,process.env.ACESS_ADMINTOKEN_SECRET)
         if(jwtverify){
         next()
         }

@@ -1,7 +1,7 @@
 const express = require('express')
 const adminRoute = express.Router()
 const controller = require('../controllers/admin.controller')
-const auth = require('../middleware/jwt')
+const auth = require('../middleware/jwtadmin')
 const trycatchmiddleware =require('../middleware/trycatchmidlware')
 
 adminRoute.post('/admin/login',trycatchmiddleware(controller.admin))
@@ -13,5 +13,6 @@ adminRoute.get('/admin/products/category/:categoryname',auth,trycatchmiddleware(
 adminRoute.post('/admin/products',auth,trycatchmiddleware(controller.adminAddproduct))
 adminRoute.put('/admin/products',auth,trycatchmiddleware(controller.adminEditproduct))
 adminRoute.delete('/admin/products',auth,trycatchmiddleware(controller.adminDelete))
-adminRoute.delete('/admin/stats',auth,trycatchmiddleware(controller.stats))
+adminRoute.get('/admin/stats',auth,trycatchmiddleware(controller.stats))
+adminRoute.get('/admin/orders',auth,trycatchmiddleware(controller.orders))
 module.exports=adminRoute

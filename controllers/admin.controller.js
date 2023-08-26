@@ -1,6 +1,7 @@
 const userSchema = require('../Model/User')
 const productSchema = require('../Model/Product')
 const jwt = require('jsonwebtoken')
+require("dotenv").config();
 const {joiProductSchema} = require('../Model/validationschema')
 module.exports={
     admin:async(req,res)=>{
@@ -10,7 +11,7 @@ module.exports={
             const resp ={
                 id : admin.email
             }
-            const jwt_token = jwt.sign(resp,"secret")
+            const jwt_token = jwt.sign(resp,process.env.ACESS_ADMINTOKEN_SECRET, { expiresIn: 86400 })
             res.json({auth:true,token:jwt_token, status: 'success',
             message: 'Successfully logged In.'})
          
@@ -113,6 +114,23 @@ module.exports={
         }
     },
     stats:async(req,res)=>{
+        
+    },
+
+
+    orders:async(req,res)=>{const order =await userSchema.find({},"order")
+    orders = order.filter((item)=>{
+     return item.order.length>0
+    })
+
+
+    res.json({
+      status: 'success',
+      message: 'Successfully fetched order detail.',
+      data: orders
+      })
+
+  
         
     }
 
