@@ -13,8 +13,7 @@ module.exports={
             }
             const jwt_token = jwt.sign(resp,process.env.ACESS_ADMINTOKEN_SECRET, { expiresIn: 86400 })
             res.json({auth:true,token:jwt_token, status: 'success',
-            message: 'Successfully logged In.'})
-         
+            message: 'Successfully logged In.'}) 
             }
             else {
            res.send('user unavaliable')
@@ -61,7 +60,7 @@ module.exports={
     },
     //admin view product by category
     productcategory:async(req,res)=>{
-        const productcategory = await productSchema.find({category:req.params.categoryname})
+        const productcategory = await productSchema.find({category:req.params.categoryname})//TODO: change in to params
         if(productcategory.length != 0 ){
             res.status(200).json({
                 status: 'success',
@@ -114,6 +113,35 @@ module.exports={
         }
     },
     stats:async(req,res)=>{
+        const aggregation=userSchema.aggregate([
+            {
+              $unwind:'$order'
+            },
+            {
+              $group:{
+                _id:null,
+                totalRevenue: { $sum: '$order.totalamount' },
+                totalItemsSold: { $sum: { $size: '$order.product' }}
+      
+              }
+            }
+          ])
+          const result = await aggregation.exec();
+          const totalRevenue = result[0].totalRevenue;
+          const totalItemsSold = result[0].totalItemsSold;
+      
+      
+      
+      
+          res.json({
+            status: 'success',
+            message: 'Successfully fetched stats.',
+            data:{
+              'TotalRevenue': totalRevenue,
+              'Total Items Sold':totalItemsSold
+      
+            }
+            })
         
     },
 

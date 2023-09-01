@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 const auth =(req,res,next)=>{
     const token = req.headers['authorization']
-    console.log(token);
     if(token){
         const recive = token && token.split(' ')[1]
+        console.log(recive);
         const jwtverify = jwt.verify(recive,process.env.ACESS_ADMINTOKEN_SECRET)
         if(jwtverify){
         next()
